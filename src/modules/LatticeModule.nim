@@ -43,8 +43,8 @@ proc getEntry*(lattice: LatticeModule, hash: string): Future[JSONNode] {.async.}
     ])
 
     #If there was an error, raise it.
-    if res.hasKey("error"):
-        raise newException(EmberError, res["error"].getStr())
+    if result.hasKey("error"):
+        raise newException(EmberError, result["error"].getStr())
 
 #Get Unarchived Verifications.
 proc getUnarchivedVerifications*(lattice: LatticeModule): Future[JSONNode] {.async.} =
