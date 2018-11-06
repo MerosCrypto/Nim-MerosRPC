@@ -4,6 +4,9 @@ import ../EmberRPCObj
 #Async standard lib.
 import asyncdispatch
 
+#String utils standard lib.
+import strutils
+
 #JSON standard lib.
 import JSON
 
@@ -41,3 +44,14 @@ proc getBlock*(merit: MeritModule, nonce: int): Future[JSONNode] {.async.} =
     #If there was an error, raise it.
     if result.hasKey("error"):
         raise newException(EmberError, result["error"].getStr())
+
+#Publish a Block.
+proc publishBlock*(merit: MeritModule, data: string) {.async.} =
+    #Call publishBlock.
+    var res: JSONNode = await merit.parent.call("merit", "publishBlock", %* [
+        data.toHex()
+    ])
+
+    #If there was an error, raise it.
+    if res.hasKey("error"):
+        raise newException(EmberError, res["error"].getStr())

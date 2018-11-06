@@ -42,7 +42,7 @@ type
 proc newEmberRPC*(
     ip: string = "127.0.0.1",
     port: int = 5133
-): EmberRPC =
+): Future[EmberRPC] {.async.} =
     #Set the IP/Port and create a Socket.
     result = EmberRPC(
         ip: ip,
@@ -68,7 +68,7 @@ proc newEmberRPC*(
     )
 
     #Connect.
-    asyncCheck result.socket.connect(ip, Port(port))
+    await result.socket.connect(ip, Port(port))
 
 #Call.
 proc call*(

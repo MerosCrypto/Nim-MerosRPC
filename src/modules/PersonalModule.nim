@@ -17,7 +17,7 @@ proc getWallet*(personal: PersonalModule): Future[JSONNode] {.async.} =
         raise newException(EmberError, result["error"].getStr())
 
 #Set the seed.
-proc setSeed*(personal: PersonalModule, seed: string): Future[bool] {.async.} =
+proc setSeed*(personal: PersonalModule, seed: string) {.async.} =
     #Call setSeed.
     var res: JSONNode = await personal.parent.call("personal", "setSeed", %* [
         seed
@@ -26,9 +26,6 @@ proc setSeed*(personal: PersonalModule, seed: string): Future[bool] {.async.} =
     #If there was an error, raise it.
     if res.hasKey("error"):
         raise newException(EmberError, res["error"].getStr())
-
-    #Else, return true.
-    result = true
 
 #Create a Send.
 proc send*(

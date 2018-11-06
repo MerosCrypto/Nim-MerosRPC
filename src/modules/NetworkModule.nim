@@ -12,7 +12,7 @@ proc connect*(
     network: NetworkModule,
     ip: string,
     port: int = 0
-): Future[bool] {.async.} =
+) {.async.} =
     #Create a var for the response.
     var res: JSONNode
 
@@ -31,6 +31,3 @@ proc connect*(
     #If there was an error, raise it.
     if res.hasKey("error"):
         raise newException(EmberError, res["error"].getStr())
-
-    #Return true.
-    result = true
