@@ -52,5 +52,8 @@ proc getUnarchivedVerifications*(lattice: LatticeModule): Future[JSONNode] {.asy
     result = await lattice.parent.call("lattice", "getUnarchivedVerifications")
 
     #If there was an error, raise it.
-    if result.hasKey("error"):
+    if (
+        (result.kind == JObject) and
+        (result.hasKey("error"))
+    ):
         raise newException(EmberError, result["error"].getStr())
