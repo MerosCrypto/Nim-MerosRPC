@@ -35,10 +35,22 @@ proc getBalance*(lattice: LatticeModule, address: string): Future[string] {.asyn
     #Else, return the balance.
     result = res["balance"].getStr()
 
+#Get an Entry by its index.
+proc getEntryByIndex*(lattice: LatticeModule, address: string, nonce: int): Future[JSONNode] {.async.} =
+    #Call getEntryByIndex and store it in the result.
+    result = await lattice.parent.call("lattice", "getEntryByIndex", %* [
+        address,
+        nonce
+    ])
+
+    #If there was an error, raise it.
+    if result.hasKey("error"):
+        raise newException(EmberError, result["error"].getStr())
+
 #Get an Entry by its hash.
-proc getEntry*(lattice: LatticeModule, hash: string): Future[JSONNode] {.async.} =
-    #Call getEntry and store it in the result.
-    result = await lattice.parent.call("lattice", "getEntry", %* [
+proc getEntryByHash*(lattice: LatticeModule, hash: string): Future[JSONNode] {.async.} =
+    #Call getEntryByHash and store it in the result.
+    result = await lattice.parent.call("lattice", "getEntryByHash", %* [
         hash
     ])
 
