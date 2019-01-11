@@ -35,18 +35,6 @@ proc getBalance*(lattice: LatticeModule, address: string): Future[string] {.asyn
     #Else, return the balance.
     result = res["balance"].getStr()
 
-#Get an Entry by its index.
-proc getEntryByIndex*(lattice: LatticeModule, address: string, nonce: int): Future[JSONNode] {.async.} =
-    #Call getEntryByIndex and store it in the result.
-    result = await lattice.parent.call("lattice", "getEntryByIndex", %* [
-        address,
-        nonce
-    ])
-
-    #If there was an error, raise it.
-    if result.hasKey("error"):
-        raise newException(EmberError, result["error"].getStr())
-
 #Get an Entry by its hash.
 proc getEntryByHash*(lattice: LatticeModule, hash: string): Future[JSONNode] {.async.} =
     #Call getEntryByHash and store it in the result.
@@ -58,14 +46,14 @@ proc getEntryByHash*(lattice: LatticeModule, hash: string): Future[JSONNode] {.a
     if result.hasKey("error"):
         raise newException(EmberError, result["error"].getStr())
 
-#Get Unarchived Verifications.
-proc getUnarchivedVerifications*(lattice: LatticeModule): Future[JSONNode] {.async.} =
-    #Call getUnarchivedVerifications and store it in the result.
-    result = await lattice.parent.call("lattice", "getUnarchivedVerifications")
+#Get an Entry by its index.
+proc getEntryByIndex*(lattice: LatticeModule, address: string, nonce: int): Future[JSONNode] {.async.} =
+    #Call getEntryByIndex and store it in the result.
+    result = await lattice.parent.call("lattice", "getEntryByIndex", %* [
+        address,
+        nonce
+    ])
 
     #If there was an error, raise it.
-    if (
-        (result.kind == JObject) and
-        (result.hasKey("error"))
-    ):
+    if result.hasKey("error"):
         raise newException(EmberError, result["error"].getStr())
