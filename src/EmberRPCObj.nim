@@ -16,11 +16,12 @@ type
         parent*: EmberRPC
 
     #Module Descendants.
-    SystemModule*   = ref object of Module
-    MeritModule*    = ref object of Module
-    LatticeModule*  = ref object of Module
-    NetworkModule*  = ref object of Module
-    PersonalModule* = ref object of Module
+    SystemModule*        = ref object of Module
+    VerificationsModule* = ref object of Module
+    MeritModule*         = ref object of Module
+    LatticeModule*       = ref object of Module
+    NetworkModule*       = ref object of Module
+    PersonalModule*      = ref object of Module
 
     #RPC object.
     EmberRPC* = ref object of RootObj
@@ -32,11 +33,12 @@ type
         socket*: AsyncSocket
 
         #Modules.
-        system*:   SystemModule
-        merit*:    MeritModule
-        lattice*:  LatticeModule
-        network*:  NetworkModule
-        personal*: PersonalModule
+        system*:        SystemModule
+        verifications*: VerificationsModule
+        merit*:         MeritModule
+        lattice*:       LatticeModule
+        network*:       NetworkModule
+        personal*:      PersonalModule
 
 #Constructor.
 proc newEmberRPC*(
@@ -55,6 +57,9 @@ proc newEmberRPC*(
         parent: result
     )
     result.merit = MeritModule(
+        parent: result
+    )
+    result.verifications = VerificationsModule(
         parent: result
     )
     result.lattice = LatticeModule(
