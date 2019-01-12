@@ -1,5 +1,5 @@
 #RPC object.
-import ../EmberRPCObj
+import ../MerosRPCObj
 
 #Async standard lib.
 import asyncdispatch
@@ -19,7 +19,7 @@ proc setSeed*(personal: PersonalModule, seed: string) {.async.} =
 
     #If there was an error, raise it.
     if res.hasKey("error"):
-        raise newException(EmberError, res["error"].getStr())
+        raise newException(MerosError, res["error"].getStr())
 
 #Get the Wallet.
 proc getWallet*(personal: PersonalModule): Future[JSONNode] {.async.} =
@@ -28,7 +28,7 @@ proc getWallet*(personal: PersonalModule): Future[JSONNode] {.async.} =
 
     #If there was an error, raise it.
     if result.hasKey("error"):
-        raise newException(EmberError, result["error"].getStr())
+        raise newException(MerosError, result["error"].getStr())
 
 #Create a Send.
 proc send*(
@@ -46,7 +46,7 @@ proc send*(
 
     #If there was an error, raise it.
     if res.hasKey("error"):
-        raise newException(EmberError, res["error"].getStr())
+        raise newException(MerosError, res["error"].getStr())
 
     #Else, return the hash.
     result = res["hash"].getStr()
@@ -67,7 +67,7 @@ proc receive*(
 
     #If there was an error, raise it.
     if res.hasKey("error"):
-        raise newException(EmberError, res["error"].getStr())
+        raise newException(MerosError, res["error"].getStr())
 
     #Else, return the hash.
     result = res["hash"].getStr()
@@ -86,7 +86,7 @@ proc data*(
 
     #If there was an error, raise it.
     if res.hasKey("error"):
-        raise newException(EmberError, res["error"].getStr())
+        raise newException(MerosError, res["error"].getStr())
 
     #Else, return the hash.
     result = res["hash"].getStr()

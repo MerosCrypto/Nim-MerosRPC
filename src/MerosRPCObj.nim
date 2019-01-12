@@ -8,12 +8,12 @@ import asyncnet
 import json
 
 type
-    EmberError* = object of Exception
+    MerosError* = object of Exception
 
     #Module object.
     Module* = ref object of RootObj
         #Ref to the RPC parent.
-        parent*: EmberRPC
+        parent*: MerosRPC
 
     #Module Descendants.
     SystemModule*        = ref object of Module
@@ -24,7 +24,7 @@ type
     PersonalModule*      = ref object of Module
 
     #RPC object.
-    EmberRPC* = ref object of RootObj
+    MerosRPC* = ref object of RootObj
         #IP/Port.
         ip*:   string
         port*: int
@@ -41,12 +41,12 @@ type
         personal*:      PersonalModule
 
 #Constructor.
-proc newEmberRPC*(
+proc newMerosRPC*(
     ip: string = "127.0.0.1",
     port: int = 5133
-): Future[EmberRPC] {.async.} =
+): Future[MerosRPC] {.async.} =
     #Set the IP/Port and create a Socket.
-    result = EmberRPC(
+    result = MerosRPC(
         ip: ip,
         port: port,
         socket: newAsyncSocket()
@@ -77,7 +77,7 @@ proc newEmberRPC*(
 
 #Call.
 proc call*(
-    rpc: EmberRPC,
+    rpc: MerosRPC,
     module: string,
     methodName: string,
     args: JSONNode = %* []
@@ -103,6 +103,6 @@ proc call*(
 
 #Disconnect.
 proc disconnect*(
-    rpc: EmberRPC
+    rpc: MerosRPC
 ) =
     rpc.socket.close()

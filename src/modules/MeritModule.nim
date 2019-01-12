@@ -1,5 +1,5 @@
 #RPC object.
-import ../EmberRPCObj
+import ../MerosRPCObj
 
 #Async standard lib.
 import asyncdispatch
@@ -17,7 +17,7 @@ proc getHeight*(merit: MeritModule): Future[int] {.async.} =
 
     #If there was an error, raise it.
     if res.hasKey("error"):
-        raise newException(EmberError, res["error"].getStr())
+        raise newException(MerosError, res["error"].getStr())
 
     #Else, return the height.
     result = res["height"].getInt()
@@ -29,7 +29,7 @@ proc getDifficulty*(merit: MeritModule): Future[string] {.async.} =
 
     #If there was an error, raise it.
     if res.hasKey("error"):
-        raise newException(EmberError, res["error"].getStr())
+        raise newException(MerosError, res["error"].getStr())
 
     #Else, return the difficulty.
     result = res["difficulty"].getStr()
@@ -43,7 +43,7 @@ proc getBlock*(merit: MeritModule, nonce: int): Future[JSONNode] {.async.} =
 
     #If there was an error, raise it.
     if result.hasKey("error"):
-        raise newException(EmberError, result["error"].getStr())
+        raise newException(MerosError, result["error"].getStr())
 
 #Publish a Block.
 proc publishBlock*(merit: MeritModule, data: string) {.async.} =
@@ -54,4 +54,4 @@ proc publishBlock*(merit: MeritModule, data: string) {.async.} =
 
     #If there was an error, raise it.
     if res.hasKey("error"):
-        raise newException(EmberError, res["error"].getStr())
+        raise newException(MerosError, res["error"].getStr())

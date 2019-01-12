@@ -1,6 +1,6 @@
 #RPC object.
-import src/EmberRPCObj
-export EmberRPCObj
+import src/MerosRPCObj
+export MerosRPCObj
 
 #Modules.
 import src/modules/SystemModule

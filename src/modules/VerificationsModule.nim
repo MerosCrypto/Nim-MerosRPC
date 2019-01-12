@@ -1,5 +1,5 @@
 #RPC object.
-import ../EmberRPCObj
+import ../MerosRPCObj
 
 #Async standard lib.
 import asyncdispatch

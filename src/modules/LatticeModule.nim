@@ -1,5 +1,5 @@
 #RPC object.
-import ../EmberRPCObj
+import ../MerosRPCObj
 
 #Async standard lib.
 import asyncdispatch
@@ -16,7 +16,7 @@ proc getHeight*(lattice: LatticeModule, address: string): Future[string] {.async
 
     #If there was an error, raise it.
     if res.hasKey("error"):
-        raise newException(EmberError, res["error"].getStr())
+        raise newException(MerosError, res["error"].getStr())
 
     #Else, return the height.
     result = res["height"].getStr()
@@ -30,7 +30,7 @@ proc getBalance*(lattice: LatticeModule, address: string): Future[string] {.asyn
 
     #If there was an error, raise it.
     if res.hasKey("error"):
-        raise newException(EmberError, res["error"].getStr())
+        raise newException(MerosError, res["error"].getStr())
 
     #Else, return the balance.
     result = res["balance"].getStr()
@@ -44,7 +44,7 @@ proc getEntryByHash*(lattice: LatticeModule, hash: string): Future[JSONNode] {.a
 
     #If there was an error, raise it.
     if result.hasKey("error"):
-        raise newException(EmberError, result["error"].getStr())
+        raise newException(MerosError, result["error"].getStr())
 
 #Get an Entry by its index.
 proc getEntryByIndex*(lattice: LatticeModule, address: string, nonce: int): Future[JSONNode] {.async.} =
@@ -56,4 +56,4 @@ proc getEntryByIndex*(lattice: LatticeModule, address: string, nonce: int): Futu
 
     #If there was an error, raise it.
     if result.hasKey("error"):
-        raise newException(EmberError, result["error"].getStr())
+        raise newException(MerosError, result["error"].getStr())

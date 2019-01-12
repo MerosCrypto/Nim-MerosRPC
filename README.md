@@ -1,3 +1,3 @@
-# Nim-Ember-RPC (EmberRPC)
+# Nim-Meros-RPC (MerosRPC)
 
-A Nim Library for connecting to the Ember RPC.
+A Nim Library for connecting to the Meros RPC.
