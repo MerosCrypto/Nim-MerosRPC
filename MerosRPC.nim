@@ -1,14 +1,14 @@
 #RPC object.
-import src/MerosRPCObj
+import MerosRPC/MerosRPCObj
 export MerosRPCObj
 
 #Modules.
-import src/modules/SystemModule
-import src/modules/VerificationsModule
-import src/modules/MeritModule
-import src/modules/LatticeModule
-import src/modules/NetworkModule
-import src/modules/PersonalModule
+import MerosRPC/modules/SystemModule
+import MerosRPC/modules/VerificationsModule
+import MerosRPC/modules/MeritModule
+import MerosRPC/modules/LatticeModule
+import MerosRPC/modules/NetworkModule
+import MerosRPC/modules/PersonalModule
 
 export SystemModule
 export VerificationsModule
