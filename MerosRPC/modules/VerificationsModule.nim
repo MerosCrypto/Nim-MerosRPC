@@ -13,8 +13,9 @@ import JSON
 #Get unarchived verifications.
 proc getUnarchivedVerifications*(verifs: VerificationsModule): Future[JSONNode] {.async.} =
     #Call getUnarchivedVerifications and store it in the result.
-    result = await verifs.parent.call("verifs", "getUnarchivedVerifications")
+    result = await verifs.parent.call("verifications", "getUnarchivedVerifications")
 
     #If there was an error, raise it.
-    if result.hasKey("error"):
-        raise newException(MerosError, result["error"].getStr())
+    if result.kind == JObject:
+        if result.hasKey("error"):
+            raise newException(MerosError, result["error"].getStr())
