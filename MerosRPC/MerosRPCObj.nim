@@ -24,7 +24,7 @@ type
     PersonalModule*      = ref object of Module
 
     #RPC object.
-    MerosRPC* = ref object of RootObj
+    MerosRPC* = ref object
         #IP/Port.
         ip*:   string
         port*: int

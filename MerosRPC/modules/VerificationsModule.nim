@@ -4,9 +4,6 @@ import ../MerosRPCObj
 #Async standard lib.
 import asyncdispatch
 
-#String utils standard lib.
-import strutils
-
 #JSON standard lib.
 import JSON
 
@@ -14,12 +11,12 @@ import JSON
 proc getVerification*(
     verifs: VerificationsModule,
     key: string,
-    nonce: uint
+    nonce: int
 ): Future[JSONNode] {.async.} =
     #Call getVerification and store it in the result.
     result = await verifs.parent.call("verifications", "getVerification", %* [
         key,
-        int(nonce)
+        nonce
     ])
 
     #If there was an error, raise it.
@@ -28,7 +25,9 @@ proc getVerification*(
             raise newException(MerosError, result["error"].getStr())
 
 #Get unarchived verifications.
-proc getUnarchivedVerifications*(verifs: VerificationsModule): Future[JSONNode] {.async.} =
+proc getUnarchivedVerifications*(
+    verifs: VerificationsModule
+): Future[JSONNode] {.async.} =
     #Call getUnarchivedVerifications and store it in the result.
     result = await verifs.parent.call("verifications", "getUnarchivedVerifications")
 
