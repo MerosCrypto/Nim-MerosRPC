@@ -11,7 +11,9 @@ import strutils
 import JSON
 
 #Get the Blockchain's Height.
-proc getHeight*(merit: MeritModule): Future[int] {.async.} =
+proc getHeight*(
+    merit: MeritModule
+): Future[int] {.async.} =
     #Call getHeight.
     var res: JSONNode = await merit.parent.call("merit", "getHeight")
 
@@ -23,7 +25,9 @@ proc getHeight*(merit: MeritModule): Future[int] {.async.} =
     result = res["height"].getInt()
 
 #Get the Blockchain's Difficulty.
-proc getDifficulty*(merit: MeritModule): Future[string] {.async.} =
+proc getDifficulty*(
+    merit: MeritModule
+): Future[string] {.async.} =
     #Call getDifficulty.
     var res: JSONNode = await merit.parent.call("merit", "getDifficulty")
 
@@ -35,7 +39,10 @@ proc getDifficulty*(merit: MeritModule): Future[string] {.async.} =
     result = res["difficulty"].getStr()
 
 #Get a Block.
-proc getBlock*(merit: MeritModule, nonce: int): Future[JSONNode] {.async.} =
+proc getBlock*(
+    merit: MeritModule,
+    nonce: int
+): Future[JSONNode] {.async.} =
     #Call getBlock and store it in the result.
     result = await merit.parent.call("merit", "getBlock", %* [
         nonce
@@ -46,7 +53,10 @@ proc getBlock*(merit: MeritModule, nonce: int): Future[JSONNode] {.async.} =
         raise newException(MerosError, result["error"].getStr())
 
 #Publish a Block.
-proc publishBlock*(merit: MeritModule, data: string) {.async.} =
+proc publishBlock*(
+    merit: MeritModule,
+    data: string
+) {.async.} =
     #Call publishBlock.
     var res: JSONNode = await merit.parent.call("merit", "publishBlock", %* [
         data.toHex()

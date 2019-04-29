@@ -5,5 +5,7 @@ import ../MerosRPCObj
 import asyncdispatch
 
 #Quit.
-proc quit*(system: SystemModule) {.async.} =
+proc quit*(
+    system: SystemModule
+) {.async.} =
     discard await system.parent.call("system", "quit")

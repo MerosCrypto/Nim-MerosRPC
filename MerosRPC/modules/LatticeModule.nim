@@ -8,7 +8,10 @@ import asyncdispatch
 import JSON
 
 #Get an Account's Height.
-proc getHeight*(lattice: LatticeModule, address: string): Future[string] {.async.} =
+proc getHeight*(
+    lattice: LatticeModule,
+    address: string
+): Future[int] {.async.} =
     #Call getHeight.
     var res: JSONNode = await lattice.parent.call("lattice", "getHeight", %* [
         address
@@ -19,10 +22,13 @@ proc getHeight*(lattice: LatticeModule, address: string): Future[string] {.async
         raise newException(MerosError, res["error"].getStr())
 
     #Else, return the height.
-    result = res["height"].getStr()
+    result = res["height"].getInt()
 
 #Get an Account's Balance.
-proc getBalance*(lattice: LatticeModule, address: string): Future[string] {.async.} =
+proc getBalance*(
+    lattice: LatticeModule,
+    address: string
+): Future[string] {.async.} =
     #Call getBalance.
     var res: JSONNode = await lattice.parent.call("lattice", "getBalance", %* [
         address
@@ -36,7 +42,10 @@ proc getBalance*(lattice: LatticeModule, address: string): Future[string] {.asyn
     result = res["balance"].getStr()
 
 #Get an Entry by its hash.
-proc getEntryByHash*(lattice: LatticeModule, hash: string): Future[JSONNode] {.async.} =
+proc getEntryByHash*(
+    lattice: LatticeModule,
+    hash: string
+): Future[JSONNode] {.async.} =
     #Call getEntryByHash and store it in the result.
     result = await lattice.parent.call("lattice", "getEntryByHash", %* [
         hash
@@ -47,7 +56,11 @@ proc getEntryByHash*(lattice: LatticeModule, hash: string): Future[JSONNode] {.a
         raise newException(MerosError, result["error"].getStr())
 
 #Get an Entry by its index.
-proc getEntryByIndex*(lattice: LatticeModule, address: string, nonce: int): Future[JSONNode] {.async.} =
+proc getEntryByIndex*(
+    lattice: LatticeModule,
+    address: string,
+    nonce: int
+): Future[JSONNode] {.async.} =
     #Call getEntryByIndex and store it in the result.
     result = await lattice.parent.call("lattice", "getEntryByIndex", %* [
         address,

@@ -11,7 +11,10 @@ import strutils
 import JSON
 
 #Set the seed.
-proc setSeed*(personal: PersonalModule, seed: string) {.async.} =
+proc setSeed*(
+    personal: PersonalModule,
+    seed: string
+) {.async.} =
     #Call setSeed.
     var res: JSONNode = await personal.parent.call("personal", "setSeed", %* [
         seed
@@ -22,7 +25,9 @@ proc setSeed*(personal: PersonalModule, seed: string) {.async.} =
         raise newException(MerosError, res["error"].getStr())
 
 #Get the Wallet.
-proc getWallet*(personal: PersonalModule): Future[JSONNode] {.async.} =
+proc getWallet*(
+    personal: PersonalModule
+): Future[JSONNode] {.async.} =
     #Call getWallet and store the result.
     result = await personal.parent.call("personal", "getWallet")
 
@@ -35,7 +40,7 @@ proc send*(
     personal: PersonalModule,
     address: string,
     amount: string,
-    nonce: string
+    nonce: int
 ): Future[string] {.async.} =
     #Call send.
     var res: JSONNode = await personal.parent.call("personal", "send", %* [
@@ -56,7 +61,7 @@ proc receive*(
     personal: PersonalModule,
     inputAddress: string,
     inputNonce: string,
-    nonce: string
+    nonce: int
 ): Future[string] {.async.} =
     #Call receive.
     var res: JSONNode = await personal.parent.call("personal", "receive", %* [
@@ -76,7 +81,7 @@ proc receive*(
 proc data*(
     personal: PersonalModule,
     data: string,
-    nonce: string
+    nonce: int
 ): Future[string] {.async.} =
     #Call data.
     var res: JSONNode = await personal.parent.call("personal", "data", %* [

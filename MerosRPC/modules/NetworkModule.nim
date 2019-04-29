@@ -11,14 +11,14 @@ import JSON
 proc connect*(
     network: NetworkModule,
     ip: string,
-    port: int = 0
+    port: int = -1
 ) {.async.} =
     #Create a var for the response.
     var res: JSONNode
 
     #Call connect.
     #If we have a port, pass it.
-    if port != 0:
+    if port != -1:
         res = await network.parent.call("network", "connect", %* [
             ip,
             port
