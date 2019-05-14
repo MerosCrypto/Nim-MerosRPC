@@ -7,14 +7,14 @@ import asyncdispatch
 #JSON standard lib.
 import JSON
 
-#Get a verification.
-proc getVerification*(
-    verifs: VerificationsModule,
+#Get an Element.
+proc getElement*(
+    consensus: ConsensusModule,
     key: string,
     nonce: int
 ): Future[JSONNode] {.async.} =
-    #Call getVerification and store it in the result.
-    result = await verifs.parent.call("verifications", "getVerification", %* [
+    #Call getElement and store it in the result.
+    result = await consensus.parent.call("consensus", "getElement", %* [
         key,
         nonce
     ])
@@ -24,12 +24,12 @@ proc getVerification*(
         if result.hasKey("error"):
             raise newException(MerosError, result["error"].getStr())
 
-#Get unarchived verifications.
-proc getUnarchivedVerifications*(
-    verifs: VerificationsModule
+#Get unarchived records.
+proc getUnarchivedMeritHolderRecords*(
+    consensus: ConsensusModule
 ): Future[JSONNode] {.async.} =
-    #Call getUnarchivedVerifications and store it in the result.
-    result = await verifs.parent.call("verifications", "getUnarchivedVerifications")
+    #Call getUnarchivedMeritHolderRecords and store it in the result.
+    result = await consensus.parent.call("consensus", "getUnarchivedMeritHolderRecords")
 
     #If there was an error, raise it.
     if result.kind == JObject:
