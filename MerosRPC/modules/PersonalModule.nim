@@ -38,36 +38,13 @@ proc getWallet*(
 #Create a Send.
 proc send*(
     personal: PersonalModule,
-    address: string,
-    amount: string,
-    nonce: int
+    destination: string,
+    amount: string
 ): Future[string] {.async.} =
     #Call send.
     var res: JSONNode = await personal.parent.call("personal", "send", %* [
-        address,
-        amount,
-        nonce
-    ])
-
-    #If there was an error, raise it.
-    if res.hasKey("error"):
-        raise newException(MerosError, res["error"].getStr())
-
-    #Else, return the hash.
-    result = res["hash"].getStr()
-
-#Create a Receive.
-proc receive*(
-    personal: PersonalModule,
-    inputAddress: string,
-    inputNonce: string,
-    nonce: int
-): Future[string] {.async.} =
-    #Call receive.
-    var res: JSONNode = await personal.parent.call("personal", "receive", %* [
-        inputAddress,
-        inputNonce,
-        nonce
+        destination,
+        amount
     ])
 
     #If there was an error, raise it.
@@ -80,13 +57,11 @@ proc receive*(
 #Create a Data.
 proc data*(
     personal: PersonalModule,
-    data: string,
-    nonce: int
+    data: string
 ): Future[string] {.async.} =
     #Call data.
     var res: JSONNode = await personal.parent.call("personal", "data", %* [
-        data.toHex(),
-        nonce
+        data.toHex()
     ])
 
     #If there was an error, raise it.

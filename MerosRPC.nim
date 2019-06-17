@@ -6,13 +6,13 @@ export MerosRPCObj
 import MerosRPC/modules/SystemModule
 import MerosRPC/modules/ConsensusModule
 import MerosRPC/modules/MeritModule
-import MerosRPC/modules/LatticeModule
+import MerosRPC/modules/TransactionsModule
 import MerosRPC/modules/NetworkModule
 import MerosRPC/modules/PersonalModule
 
 export SystemModule
 export ConsensusModule
 export MeritModule
-export LatticeModule
+export TransactionsModule
 export NetworkModule
 export PersonalModule

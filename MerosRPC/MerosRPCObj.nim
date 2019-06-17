@@ -16,12 +16,12 @@ type
         parent*: MerosRPC
 
     #Module Descendants.
-    SystemModule*    = ref object of Module
-    ConsensusModule* = ref object of Module
-    MeritModule*     = ref object of Module
-    LatticeModule*   = ref object of Module
-    NetworkModule*   = ref object of Module
-    PersonalModule*  = ref object of Module
+    SystemModule*       = ref object of Module
+    ConsensusModule*    = ref object of Module
+    MeritModule*        = ref object of Module
+    TransactionsModule* = ref object of Module
+    NetworkModule*      = ref object of Module
+    PersonalModule*     = ref object of Module
 
     #RPC object.
     MerosRPC* = ref object
@@ -33,12 +33,12 @@ type
         socket*: AsyncSocket
 
         #Modules.
-        system*:    SystemModule
-        consensus*: ConsensusModule
-        merit*:     MeritModule
-        lattice*:   LatticeModule
-        network*:   NetworkModule
-        personal*:  PersonalModule
+        system*:       SystemModule
+        consensus*:    ConsensusModule
+        merit*:        MeritModule
+        transactions*: TransactionsModule
+        network*:      NetworkModule
+        personal*:     PersonalModule
 
 #Constructor.
 proc newMerosRPC*(
@@ -62,7 +62,7 @@ proc newMerosRPC*(
     result.consensus = ConsensusModule(
         parent: result
     )
-    result.lattice = LatticeModule(
+    result.transactions = TransactionsModule(
         parent: result
     )
     result.network = NetworkModule(
