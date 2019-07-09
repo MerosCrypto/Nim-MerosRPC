@@ -25,11 +25,11 @@ proc getElement*(
             raise newException(MerosError, result["error"].getStr())
 
 #Get unarchived records.
-proc getUnarchivedMeritHolderRecords*(
+proc getUnarchivedRecords*(
     consensus: ConsensusModule
 ): Future[JSONNode] {.async.} =
-    #Call getUnarchivedMeritHolderRecords and store it in the result.
-    result = await consensus.parent.call("consensus", "getUnarchivedMeritHolderRecords")
+    #Call getUnarchivedRecords and store it in the result.
+    result = await consensus.parent.call("consensus", "getUnarchivedRecords")
 
     #If there was an error, raise it.
     if result.kind == JObject:
