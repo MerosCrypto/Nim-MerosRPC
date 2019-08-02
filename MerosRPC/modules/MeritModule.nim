@@ -52,6 +52,9 @@ proc getBlock*(
     if result.hasKey("error"):
         raise newException(MerosError, result["error"].getStr())
 
+    #Else, return the block.
+    result = result["result"]
+
 #Get the Total Merit.
 proc getTotalMerit*(
     merit: MeritModule
