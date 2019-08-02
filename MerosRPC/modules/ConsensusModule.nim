@@ -23,15 +23,3 @@ proc getElement*(
     if result.kind == JObject:
         if result.hasKey("error"):
             raise newException(MerosError, result["error"].getStr())
-
-#Get unarchived records.
-proc getUnarchivedRecords*(
-    consensus: ConsensusModule
-): Future[JSONNode] {.async.} =
-    #Call getUnarchivedRecords and store it in the result.
-    result = await consensus.parent.call("consensus", "getUnarchivedRecords")
-
-    #If there was an error, raise it.
-    if result.kind == JObject:
-        if result.hasKey("error"):
-            raise newException(MerosError, result["error"].getStr())

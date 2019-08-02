@@ -10,30 +10,52 @@ import strutils
 #JSON standard lib.
 import JSON
 
-#Set the seed.
-proc setSeed*(
+#Set the mnemonic.
+proc setMnemonic*(
     personal: PersonalModule,
-    seed: string
+    mnemonic: string
 ) {.async.} =
-    #Call setSeed.
-    var res: JSONNode = await personal.parent.call("personal", "setSeed", %* [
-        seed
+    #Call setMnemonic.
+    var res: JSONNode = await personal.parent.call("personal", "setMnemonic", %* [
+        mnemonic
+    ])
+
+    #If there was an error, raise it.
+    if res.hasKey("error"):
+        raise newException(MerosError, res["error"]["message"].getStr())
+
+#Get the Mnemonic.
+proc getMnemonic*(
+    personal: PersonalModule
+): Future[string] {.async.} =
+    #Call getMnemonic and store the result.
+    var res: JSONNode = await personal.parent.call("personal", "getMnemonic")
+
+    #If there was an error, raise it.
+    if res.hasKey("error"):
+        raise newException(MerosError, res["error"].getStr())
+
+    #Else, return the Mnemonic.
+    result = res["result"].getStr()
+
+#Get an address.
+proc getAddress*(
+    personal: PersonalModule,
+    account: int = 0,
+    change: bool = false
+): Future[string] {.async.} =
+    #Call getAddress and store the result.
+    var res: JSONNode = await personal.parent.call("personal", "getAddress", %* [
+        account,
+        change
     ])
 
     #If there was an error, raise it.
     if res.hasKey("error"):
         raise newException(MerosError, res["error"].getStr())
 
-#Get the Wallet.
-proc getWallet*(
-    personal: PersonalModule
-): Future[JSONNode] {.async.} =
-    #Call getWallet and store the result.
-    result = await personal.parent.call("personal", "getWallet")
-
-    #If there was an error, raise it.
-    if result.hasKey("error"):
-        raise newException(MerosError, result["error"].getStr())
+    #Else, return the address.
+    result = res["result"].getStr()
 
 #Create a Send.
 proc send*(
@@ -49,7 +71,7 @@ proc send*(
 
     #If there was an error, raise it.
     if res.hasKey("error"):
-        raise newException(MerosError, res["error"].getStr())
+        raise newException(MerosError, res["error"]["message"].getStr())
 
     #Else, return the hash.
     result = res["hash"].getStr()
@@ -66,7 +88,7 @@ proc data*(
 
     #If there was an error, raise it.
     if res.hasKey("error"):
-        raise newException(MerosError, res["error"].getStr())
+        raise newException(MerosError, res["error"]["message"].getStr())
 
     #Else, return the hash.
     result = res["hash"].getStr()

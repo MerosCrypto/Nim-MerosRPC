@@ -82,24 +82,33 @@ proc call*(
     methodName: string,
     args: JSONNode = %* []
 ): Future[JSONNode] {.async.} =
-    #Create a string for the data.
-    var data: string
-
-    #Uglify the JSON.
-    toUgly(
-        data,
-        %* {
-            "module": module,
-            "method": methodName,
-            "args": args
-        }
-    )
-
     #Send the data.
-    await rpc.socket.send(data & "\r\n")
+    await rpc.socket.send($ %* {
+        "jsonrpc": "2.0",
+        "id": 0,
+        "method": module & "_" & methodName,
+        "params": args
+    })
+
+    #Get the response back.
+    var
+        #Response.
+        res: string
+        #Counter used to track if the response is complete.
+        counter: int = 0
+    while true:
+        res &= await rpc.socket.recv(1)
+        if res[^1] == res[0]:
+            inc(counter)
+        elif (res[^1] == ']') and (res[0] == '['):
+            dec(counter)
+        elif (res[^1] == '}') and (res[0] == '{'):
+            dec(counter)
+        if counter == 0:
+            break
 
     #Return the response.
-    result = parseJSON(await rpc.socket.recvLine())
+    result = parseJSON(res)
 
 #Disconnect.
 proc disconnect*(
