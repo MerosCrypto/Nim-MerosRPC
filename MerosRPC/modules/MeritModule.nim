@@ -19,10 +19,10 @@ proc getHeight*(
 
     #If there was an error, raise it.
     if res.hasKey("error"):
-        raise newException(MerosError, res["error"].getStr())
+        raise newException(MerosError, res["error"]["message"].getStr())
 
     #Else, return the height.
-    result = res["height"].getInt()
+    result = res["result"].getInt()
 
 #Get the Blockchain's Difficulty.
 proc getDifficulty*(
@@ -33,10 +33,10 @@ proc getDifficulty*(
 
     #If there was an error, raise it.
     if res.hasKey("error"):
-        raise newException(MerosError, res["error"].getStr())
+        raise newException(MerosError, res["error"]["message"].getStr())
 
     #Else, return the difficulty.
-    result = res["difficulty"].getStr()
+    result = res["result"].getStr()
 
 #Get a Block.
 proc getBlock*(
@@ -52,6 +52,66 @@ proc getBlock*(
     if result.hasKey("error"):
         raise newException(MerosError, result["error"].getStr())
 
+#Get the Total Merit.
+proc getTotalMerit*(
+    merit: MeritModule
+): Future[int] {.async.} =
+    #Call getTotalMerit.
+    var res: JSONNode = await merit.parent.call("merit", "getTotalMerit")
+
+    #If there was an error, raise it.
+    if res.hasKey("error"):
+        raise newException(MerosError, res["error"]["message"].getStr())
+
+    #Else, return the merit.
+    result = res["result"].getInt()
+
+#Get the Live Merit.
+proc getLiveMerit*(
+    merit: MeritModule
+): Future[int] {.async.} =
+    #Call getLiveMerit.
+    var res: JSONNode = await merit.parent.call("merit", "getLiveMerit")
+
+    #If there was an error, raise it.
+    if res.hasKey("error"):
+        raise newException(MerosError, res["error"]["message"].getStr())
+
+    #Else, return the merit.
+    result = res["result"].getInt()
+
+#Get the Live Merit.
+proc getLiveMerit*(
+    merit: MeritModule,
+    key: string
+): Future[int] {.async.} =
+    #Call getLiveMerit.
+    var res: JSONNode = await merit.parent.call("merit", "getLiveMerit", %* [
+        key
+    ])
+
+    #If there was an error, raise it.
+    if res.hasKey("error"):
+        raise newException(MerosError, res["error"]["message"].getStr())
+
+    #Else, return the merit.
+    result = res["result"].getInt()
+
+#Get a Block Template.
+proc getBlockTemplate*(
+    merit: MeritModule,
+    miners: JSONNode
+): Future[JSONNode] {.async.} =
+    #Call getBlockTemplate.
+    result = await merit.parent.call("merit", "getBlockTemplate", miners)
+
+    #If there was an error, raise it.
+    if result.hasKey("error"):
+        raise newException(MerosError, result["error"]["message"].getStr())
+
+    #Else, return the template.
+    result = result["result"]
+
 #Publish a Block.
 proc publishBlock*(
     merit: MeritModule,
@@ -64,4 +124,4 @@ proc publishBlock*(
 
     #If there was an error, raise it.
     if res.hasKey("error"):
-        raise newException(MerosError, res["error"].getStr())
+        raise newException(MerosError, res["error"]["message"].getStr())

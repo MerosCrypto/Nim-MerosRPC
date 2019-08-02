@@ -30,4 +30,4 @@ proc connect*(
 
     #If there was an error, raise it.
     if res.hasKey("error"):
-        raise newException(MerosError, res["error"].getStr())
+        raise newException(MerosError, res["error"]["message"].getStr())
