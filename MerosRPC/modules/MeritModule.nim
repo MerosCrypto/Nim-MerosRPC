@@ -36,7 +36,7 @@ proc getDifficulty*(
         raise newException(MerosError, res["error"]["message"].getStr())
 
     #Else, return the difficulty.
-    result = res["result"].getStr()
+    result = res["result"].getStr().parseHexStr()
 
 #Get a Block.
 proc getBlock*(
@@ -69,12 +69,12 @@ proc getTotalMerit*(
     #Else, return the merit.
     result = res["result"].getInt()
 
-#Get the Live Merit.
-proc getLiveMerit*(
+#Get the Unlocked Merit.
+proc getUnlockedMerit*(
     merit: MeritModule
 ): Future[int] {.async.} =
-    #Call getLiveMerit.
-    var res: JSONNode = await merit.parent.call("merit", "getLiveMerit")
+    #Call getUnlockedMerit.
+    var res: JSONNode = await merit.parent.call("merit", "getUnlockedMerit")
 
     #If there was an error, raise it.
     if res.hasKey("error"):
@@ -83,13 +83,13 @@ proc getLiveMerit*(
     #Else, return the merit.
     result = res["result"].getInt()
 
-#Get the Live Merit.
-proc getLiveMerit*(
+#Get the Merit.
+proc getMerit*(
     merit: MeritModule,
     key: string
 ): Future[int] {.async.} =
-    #Call getLiveMerit.
-    var res: JSONNode = await merit.parent.call("merit", "getLiveMerit", %* [
+    #Call getMerit.
+    var res: JSONNode = await merit.parent.call("merit", "getMerit", %* [
         key
     ])
 
@@ -103,10 +103,12 @@ proc getLiveMerit*(
 #Get a Block Template.
 proc getBlockTemplate*(
     merit: MeritModule,
-    miners: JSONNode
+    miner: string
 ): Future[JSONNode] {.async.} =
     #Call getBlockTemplate.
-    result = await merit.parent.call("merit", "getBlockTemplate", miners)
+    result = await merit.parent.call("merit", "getBlockTemplate", %* [
+        miner.toHex()
+    ])
 
     #If there was an error, raise it.
     if result.hasKey("error"):

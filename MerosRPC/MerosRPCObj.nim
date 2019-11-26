@@ -4,6 +4,11 @@ import asyncdispatch
 #Networking standard lib.
 import asyncnet
 
+#String utils standard lib.
+import strutils
+#Export it for all modules.
+export strutils
+
 #JSON standard lib.
 import json
 

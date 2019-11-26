@@ -74,7 +74,7 @@ proc send*(
         raise newException(MerosError, res["error"]["message"].getStr())
 
     #Else, return the hash.
-    result = res["hash"].getStr()
+    result = res["hash"].getStr().parseHexStr()
 
 #Create a Data.
 proc data*(
@@ -91,4 +91,21 @@ proc data*(
         raise newException(MerosError, res["error"]["message"].getStr())
 
     #Else, return the hash.
-    result = res["hash"].getStr()
+    result = res["hash"].getStr().parseHexStr()
+
+#Convert a public key to an address.
+proc toAddress(
+    personal: PersonalModule,
+    data: string
+): Future[string] {.async.} =
+    #Call toAddress.
+    var res: JSONNode = await personal.parent.call("personal", "toAddress", %* [
+        data.toHex()
+    ])
+
+    #If there was an error, raise it.
+    if res.hasKey("error"):
+        raise newException(MerosError, res["error"]["message"].getStr())
+
+    #Else, return the address.
+    result = res.getStr()

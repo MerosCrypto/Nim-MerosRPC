@@ -20,3 +20,6 @@ proc getTransaction*(
     #If there was an error, raise it.
     if result.hasKey("error"):
         raise newException(MerosError, result["error"].getStr())
+
+    #Return the result.
+    result = result["result"]
