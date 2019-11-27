@@ -1,6 +1,6 @@
-version     = "1.3.0"
+version     = "1.4.0"
 author      = "Luke Parker"
 description = "A Nim Library for connecting to the Meros RPC."
 license     = "MIT"
 
-requires "nim >= 0.19.0"
+requires "nim >= 0.20.2"

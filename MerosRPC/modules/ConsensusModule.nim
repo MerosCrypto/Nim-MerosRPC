@@ -7,19 +7,19 @@ import asyncdispatch
 #JSON standard lib.
 import JSON
 
-#Get an Element.
-proc getElement*(
+#Get an Status.
+proc getStatus*(
     consensus: ConsensusModule,
-    key: string,
-    nonce: int
+    hash: string
 ): Future[JSONNode] {.async.} =
-    #Call getElement and store it in the result.
-    result = await consensus.parent.call("consensus", "getElement", %* [
-        key,
-        nonce
+    #Call getStatus and store it in the result.
+    result = await consensus.parent.call("consensus", "getStatus", %* [
+        hash.toHex()
     ])
 
     #If there was an error, raise it.
-    if result.kind == JObject:
-        if result.hasKey("error"):
-            raise newException(MerosError, result["error"].getStr())
+    if result.hasKey("error"):
+        raise newException(MerosError, result["error"].getStr())
+
+    #Return the status.
+    result = result["result"]
