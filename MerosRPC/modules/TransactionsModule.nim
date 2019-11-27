@@ -14,7 +14,7 @@ proc getTransaction*(
 ): Future[JSONNode] {.async.} =
     #Call getTransaction and store it in the result.
     result = await transactions.parent.call("transactions", "getTransaction", %* [
-        hash
+        hash.toHex()
     ])
 
     #If there was an error, raise it.

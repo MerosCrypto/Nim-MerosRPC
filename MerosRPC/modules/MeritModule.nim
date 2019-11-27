@@ -120,10 +120,12 @@ proc getBlockTemplate*(
 #Publish a Block.
 proc publishBlock*(
     merit: MeritModule,
+    id: int,
     data: string
 ) {.async.} =
     #Call publishBlock.
     var res: JSONNode = await merit.parent.call("merit", "publishBlock", %* [
+        id,
         data.toHex()
     ])
 
