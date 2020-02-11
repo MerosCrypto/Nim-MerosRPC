@@ -10,6 +10,20 @@ import strutils
 #JSON standard lib.
 import JSON
 
+#Get the miner key.
+proc getMiner*(
+    personal: PersonalModule
+): Future[string] {.async.} =
+    #Call getMiner.
+    var res: JSONNode = await personal.parent.call("personal", "getMiner")
+
+    #If there was an error, raise it.
+    if res.hasKey("error"):
+        raise newException(MerosError, res["error"]["message"].getStr())
+
+    #Else, return the key.
+    result = res["result"].getStr().parseHexStr()
+
 #Set the mnemonic.
 proc setMnemonic*(
     personal: PersonalModule,
@@ -109,17 +123,3 @@ proc toAddress(
 
     #Else, return the address.
     result = res.getStr()
-
-#Convert a public key to an address.
-proc getMiner*(
-    personal: PersonalModule
-): Future[string] {.async.} =
-    #Call toAddress.
-    var res: JSONNode = await personal.parent.call("personal", "getMiner")
-
-    #If there was an error, raise it.
-    if res.hasKey("error"):
-        raise newException(MerosError, res["error"]["message"].getStr())
-
-    #Else, return the address.
-    result = res["result"].getStr()
