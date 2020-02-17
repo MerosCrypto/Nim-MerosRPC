@@ -162,21 +162,20 @@ macro route(
                 doAssert(false, "Unknown route definition.")
 
         body.add(
-            newNimNode(nnkReturnStmt).add(
-                newNimNode(nnkBracketExpr).add(
-                    newNimNode(nnkCommand).add(
-                        ident("await"),
-                        newCall(
-                            ident("call"),
-                            newDotExpr(ident("module"), ident("parent")),
-                            newStrLitNode(moduleStr.strVal),
-                            newStrLitNode(function[0].strVal),
-                            prefix(args, "%*")
-                        )
-                    ),
-                    newStrLitNode("result")
-                )
-            )
+            newVarStmt(ident("res"), newNimNode(nnkBracketExpr).add(
+                newNimNode(nnkCommand).add(
+                    ident("await"),
+                    newCall(
+                        ident("call"),
+                        newDotExpr(ident("module"), ident("parent")),
+                        newStrLitNode(moduleStr.strVal),
+                        newStrLitNode(function[0].strVal),
+                        prefix(args, "%*")
+                    )
+                ),
+                newStrLitNode("result")
+            )),
+            newNimNode(nnkReturnStmt).add(ident("res"))
         )
 
         case function[^1][0].strVal:
