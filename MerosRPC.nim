@@ -88,14 +88,14 @@ proc newMerosRPC*(
     #Connect.
     await result.socket.connect(ip, Port(port))
 
-#Call.
+#Call an RPC method.
 proc call*(
     rpc: MerosRPC,
     module: string,
     methodName: string,
     args: JSONNode = %* []
 ): Future[JSONNode] {.async.} =
-    #Send the data.
+    #Send the request.
     await rpc.socket.send($ %* {
         "jsonrpc": "2.0",
         "id": 0,
@@ -105,10 +105,9 @@ proc call*(
 
     #Get the response back.
     var
-        #Response.
-        res: string
         #Counter used to track if the response is complete.
         counter: int = 0
+        res: string
     while true:
         res &= await rpc.socket.recv(1)
         if res[^1] == res[0]:
@@ -123,7 +122,7 @@ proc call*(
     #Return the response.
     result = parseJSON(res)
 
-    #If it has an error, raise and return it.
+    #If it has an error, raise it.
     if result.hasKey("error"):
         raise newMerosError(result["error"]["code"].getInt(), result["error"]["msg"].getStr())
 
@@ -183,19 +182,15 @@ macro route(
         case function[^1][0].strVal:
             of "void":
                 body.del(body.len - 1)
-
             of "int":
                 body[^1][0] = newCall(ident("getInt"), body[^1][0])
-
             of "string":
                 body[^1][0] = newCall(
                     ident("parseHexStr"),
                     newCall(ident("getStr"), body[^1][0])
                 )
-
             of "JSONNode":
                 discard
-
             else:
                 doAssert(false, "Unknown route result type.")
 
