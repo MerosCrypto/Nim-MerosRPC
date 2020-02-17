@@ -162,19 +162,32 @@ macro route(
                 doAssert(false, "Unknown route definition.")
 
         body.add(
-            newVarStmt(ident("res"), newNimNode(nnkBracketExpr).add(
-                newNimNode(nnkCommand).add(
-                    ident("await"),
-                    newCall(
-                        ident("call"),
-                        newDotExpr(ident("module"), ident("parent")),
-                        newStrLitNode(moduleStr.strVal),
-                        newStrLitNode(function[0].strVal),
-                        prefix(args, "%*")
+            newVarStmt(
+                newNimNode(nnkPragmaExpr).add(
+                    ident("res"),
+                    newNimNode(nnkPragma).add(
+                        newNimNode(nnkExprColonExpr).add(
+                            newNimNode(nnkBracketExpr).add(
+                                ident("hint"), ident("XDeclaredButNotUsed")
+                            ),
+                            ident("off")
+                        )
                     )
                 ),
-                newStrLitNode("result")
-            )),
+                newNimNode(nnkBracketExpr).add(
+                    newNimNode(nnkCommand).add(
+                        ident("await"),
+                        newCall(
+                            ident("call"),
+                            newDotExpr(ident("module"), ident("parent")),
+                            newStrLitNode(moduleStr.strVal),
+                            newStrLitNode(function[0].strVal),
+                            prefix(args, "%*")
+                        )
+                    ),
+                    newStrLitNode("result")
+                )
+            ),
             newNimNode(nnkReturnStmt).add(ident("res"))
         )
 
@@ -229,6 +242,7 @@ route ConsensusModule, "consensus":
 #Transactions module.
 route TransactionsModule, "transactions":
     getTransaction(string): JSONNode
+    getBalance(string): string
 
 #Network module.
 route NetworkModule, "network":
