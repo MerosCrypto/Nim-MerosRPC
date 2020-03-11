@@ -234,8 +234,8 @@ route MeritModule, "merit":
 
 #Consensus module.
 route ConsensusModule, "consensus":
-    getSendDifficulty(): string
-    getDataDifficulty(): string
+    getSendDifficulty(): int
+    getDataDifficulty(): int
 
     getStatus(string): JSONNode
 
