@@ -259,8 +259,6 @@ route PersonalModule, "personal":
     send(string, string): string
     data(string): string
 
-    toAddress(string): string
-
 #Disconnect.
 proc disconnect*(
     rpc: MerosRPC
