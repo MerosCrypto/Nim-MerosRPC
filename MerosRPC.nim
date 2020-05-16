@@ -48,10 +48,9 @@ type
 
 #Constructors.
 func newMerosError(
-    code: int,
-    msg: string
+    code: int
 ): ref MerosError =
-    result = newException(MerosError, msg)
+    result = newException(MerosError, "RPC call returned an error.")
     result.code = code
 
 proc newMerosRPC*(
@@ -124,7 +123,7 @@ proc call*(
 
     #If it has an error, raise it.
     if result.hasKey("error"):
-        raise newMerosError(result["error"]["code"].getInt(), result["error"]["msg"].getStr())
+        raise newMerosError(result["error"]["code"].getInt())
 
 #Route macro which automatically expands every below definition to a proper function.
 macro route(
@@ -223,7 +222,7 @@ route SystemModule, "system":
 route MeritModule, "merit":
     getHeight(): int
     getDifficulty(): string
-    getBlock(string): JSONNode
+    getBlock(int): JSONNode
 
     getTotalMerit(): int
     getUnlockedMerit(): int

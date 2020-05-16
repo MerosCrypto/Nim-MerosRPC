@@ -1,4 +1,4 @@
-version     = "2.1.3"
+version     = "2.1.4"
 author      = "Luke Parker"
 description = "A Nim Library for connecting to the Meros RPC."
 license     = "MIT"
